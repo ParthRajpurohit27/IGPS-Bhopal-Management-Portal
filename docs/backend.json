@@ -1,0 +1,48 @@
+
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Profile information for school staff including teachers, admins, and owners.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "enum": ["Mr.", "Ms.", "Mrs.", "Dr."] },
+        "name": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "mobile": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["teacher", "admin", "owner"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "name", "employeeId", "mobile", "role"]
+    },
+    "AttendanceRecord": {
+      "title": "Attendance Record",
+      "description": "Daily attendance logs for teachers.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "checkInTime": { "type": "string" },
+        "status": { "type": "string", "enum": ["present", "absent", "holiday"] },
+        "note": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "date", "status"]
+    }
+  },
+  "auth": {
+    "providers": ["password"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile document."
+    },
+    "/attendance/{attendanceId}": {
+      "schema": "AttendanceRecord",
+      "description": "Daily attendance logs."
+    }
+  }
+}
