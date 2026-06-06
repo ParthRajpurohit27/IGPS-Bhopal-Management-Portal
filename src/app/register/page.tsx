@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from 'react';
@@ -16,8 +15,7 @@ import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { toast } from '@/hooks/use-toast';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError } from '@/firebase/errors';
+import { APP_CONFIG } from '@/lib/config';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -35,7 +33,6 @@ export default function RegisterPage() {
 
     const formData = new FormData(event.currentTarget);
     const mobile = formData.get('mobile') as string;
-    const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
     const name = formData.get('name') as string;
@@ -67,9 +64,9 @@ export default function RegisterPage() {
     }
 
     let role = 'teacher';
-    if (adminCode === 'IGPS_MASTER') {
+    if (adminCode === APP_CONFIG.codes.owner) {
       role = 'owner';
-    } else if (adminCode === 'IGPS_ADMIN') {
+    } else if (adminCode === APP_CONFIG.codes.admin) {
       role = 'admin';
     }
 
@@ -84,13 +81,11 @@ export default function RegisterPage() {
         name,
         employeeId,
         mobile,
-        email: email || null,
         role: role,
         createdAt: new Date().toISOString(),
       };
 
-      const userDocRef = doc(db, 'users', user.uid);
-      await setDoc(userDocRef, userData);
+      await setDoc(doc(db, 'users', user.uid), userData);
       
       toast({
         title: "Registration Successful",
@@ -114,29 +109,19 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
-        <BookOpen className="absolute top-10 left-10 h-24 w-24 text-primary animate-pulse" />
-        <GraduationCap className="absolute bottom-20 right-20 h-32 w-32 text-accent animate-bounce" style={{ animationDuration: '4s' }} />
-        <div className="absolute top-1/2 left-1/4 h-64 w-64 bg-primary/5 blur-3xl rounded-full" />
+        <BookOpen className="absolute top-10 left-10 h-24 w-24 text-primary" />
+        <GraduationCap className="absolute bottom-20 right-20 h-32 w-32 text-accent" />
       </div>
 
       <div className="w-full max-w-md space-y-8 relative z-10">
         <div className="flex flex-col items-center text-center">
           <div className="relative h-24 w-24 overflow-hidden rounded-full shadow-lg border-2 border-primary/20 bg-white flex items-center justify-center">
-            {schoolLogo?.imageUrl ? (
-              <Image
-                src={schoolLogo.imageUrl}
-                alt="IGPS Bhopal Logo"
-                fill
-                className="object-contain p-2"
-              />
-            ) : (
-              <ShieldCheck className="h-10 w-10 text-primary/40" />
+            {schoolLogo?.imageUrl && (
+              <Image src={schoolLogo.imageUrl} alt="Logo" fill className="object-contain p-2" />
             )}
           </div>
           <h1 className="mt-4 font-headline text-3xl font-bold tracking-tight text-primary">Staff Onboarding</h1>
-          <p className="mt-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-            Official Registration Portal
-          </p>
+          <p className="mt-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Official Portal</p>
         </div>
 
         <Card className="border-none shadow-2xl rounded-3xl overflow-hidden bg-card/90 backdrop-blur-md">
@@ -146,7 +131,7 @@ export default function RegisterPage() {
                 <Label htmlFor="title" className="text-xs uppercase font-bold tracking-widest text-muted-foreground">Professional Title</Label>
                 <Select onValueChange={setTitle} required>
                   <SelectTrigger id="title" className="h-11 rounded-xl">
-                    <SelectValue placeholder="Select (Mr./Ms./Dr.)" />
+                    <SelectValue placeholder="Select Title" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Mr.">Mr.</SelectItem>
@@ -160,19 +145,17 @@ export default function RegisterPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-xs uppercase font-bold tracking-widest text-muted-foreground">Full Name</Label>
-                  <Input id="name" name="name" placeholder="Name" className="h-11 rounded-xl" required />
+                  <Input id="name" name="name" placeholder="Full Name" className="h-11 rounded-xl" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="employeeId" className="text-xs uppercase font-bold tracking-widest text-muted-foreground">Staff ID</Label>
-                  <Input id="employeeId" name="employeeId" placeholder="ID" className="h-11 rounded-xl" required />
+                  <Input id="employeeId" name="employeeId" placeholder="Emp ID" className="h-11 rounded-xl" required />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="mobile" className="text-xs uppercase font-bold tracking-widest text-muted-foreground flex items-center gap-2">
-                  <Smartphone className="h-3 w-3" /> 10-Digit Mobile
-                </Label>
-                <Input id="mobile" name="mobile" type="tel" placeholder="9876543210" maxLength={10} className="h-11 rounded-xl" required />
+                <Label htmlFor="mobile" className="text-xs uppercase font-bold tracking-widest text-muted-foreground">10-Digit Mobile</Label>
+                <Input id="mobile" name="mobile" type="tel" placeholder="Mobile Number" maxLength={10} className="h-11 rounded-xl" required />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -195,10 +178,10 @@ export default function RegisterPage() {
                     id="adminCode" 
                     name="adminCode" 
                     type="password" 
-                    placeholder="For Admin/Owner access" 
+                    placeholder="Owner/Admin Code" 
                     className="h-11 rounded-xl border-primary/20 bg-primary/5 focus:bg-white" 
                   />
-                  <p className="text-[9px] text-muted-foreground opacity-70 italic font-medium">Use 'IGPS_MASTER' to create the initial Owner account.</p>
+                  <p className="text-[9px] text-muted-foreground opacity-70 italic font-medium">Leave blank for Teacher registration.</p>
                 </div>
               </div>
 

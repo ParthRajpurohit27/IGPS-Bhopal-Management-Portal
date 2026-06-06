@@ -3,30 +3,37 @@
 
 This is the production-ready management portal for Indira Gandhi Public School, Bhopal.
 
-## 📥 Manual Download Instructions
-If the ZIP download button is failing, you must copy these essential files/folders manually:
-1. **`src/`** folder: Contains all logic and UI.
-2. **`.env`**: **CRITICAL** - Contains your Firebase connection keys. Without this, the app won't connect.
-3. **`package.json`**: Required to install the app's dependencies.
-4. **`docs/backend.json`**: The database blueprint for your security rules.
-5. **Configuration Files**: `next.config.ts`, `tailwind.config.ts`, `tsconfig.json`, `components.json`.
+## 🚀 Deployment Instructions (Vercel)
 
-*Note: You do NOT need the `.idx` folder.*
+### 1. Upload to GitHub
+Create a new private repository on GitHub and upload all files (except `.idx` and `node_modules`).
 
-## 🚀 Phase 1: Deployment (Free)
-1. **GitHub**: Create a new private repository and upload all the files mentioned above.
-2. **Vercel**: Connect your GitHub to [Vercel.com](https://vercel.com).
-3. **Firebase Keys**: In Vercel's "Environment Variables" settings, copy the values from your `.env` file so the live site can connect to your database.
+### 2. Connect to Vercel
+Connect your GitHub repository to [Vercel](https://vercel.com).
+
+### 3. CRITICAL: Environment Variables
+The "invalid-api-key" error happens because Vercel doesn't have your keys during the build. 
+1. In your Vercel Dashboard, go to **Settings** -> **Environment Variables**.
+2. Add the following keys exactly as they appear in your `.env` file:
+   - `NEXT_PUBLIC_FIREBASE_API_KEY`
+   - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+   - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+   - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+   - `NEXT_PUBLIC_FIREBASE_APP_ID`
+   - `GEMINI_API_KEY` (for AI features)
+3. **IMPORTANT**: After adding the keys, go to the **Deployments** tab and click **Redeploy**.
 
 ## 🔐 Setting up your Owner Account
 1. Once deployed, navigate to `/register`.
 2. Fill in your details (Choose your professional Title: Mr./Ms./Dr.).
 3. Use the Secret Authorization Code: **`IGPS_MASTER`** to become the **Owner**.
-4. **Security Tip**: To change this code, open `src/app/register/page.tsx` and search for the string `'IGPS_MASTER'`.
+4. **Security Tip**: To change this code, open `src/lib/config.ts` and update the `codes.owner` value.
 
-## 🛠️ Data Management
-- **Live Monitor**: The Owner Dashboard shows real-time check-in times for all staff.
-- **System Reset**: Go to "Staff Management" as an Owner to find the "Purge All Testing Data" button to clear out your testing records before the school year starts.
+## 🛠️ Troubleshooting Build Failures
+- **Deprecation Warnings**: You may see warnings about `rimraf` or `inflight`. **Ignore them.** They are just warnings and do NOT cause the build to fail.
+- **Real Errors**: Look for lines starting with `Error:` or `⨯`. 
+- **The Solution**: If the build fails, it is almost always because the **Environment Variables** in Vercel were missed or typed incorrectly. Double-check every single key and value.
 
 ---
 **Maintained by Parth Rajpurohit**
