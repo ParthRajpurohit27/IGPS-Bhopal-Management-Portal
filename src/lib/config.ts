@@ -1,3 +1,4 @@
+
 /**
  * Centralized application configuration.
  * 
@@ -11,5 +12,6 @@ export const APP_CONFIG = {
   },
   schoolName: 'Indira Gandhi Public School, Bhopal',
   location: 'Bhopal',
-  developerName: 'Parth Rajpurohit'
+  developerName: 'Parth Rajpurohit',
+  ownerName: 'Mr. Avdhesh Purohit'
 };

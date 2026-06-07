@@ -1,12 +1,13 @@
+
 /**
  * Firebase configuration object.
- * Values are pulled from environment variables.
+ * Hardcoded with project values to ensure immediate functionality upon deployment.
  */
 export const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  apiKey: "AIzaSyB3cL1es20T9zAVMzNAPJuMpxhcSR24ma0",
+  authDomain: "studio-4906958255-998d8.firebaseapp.com",
+  projectId: "studio-4906958255-998d8",
+  storageBucket: "studio-4906958255-998d8.firebasestorage.app",
+  messagingSenderId: "859872677071",
+  appId: "1:859872677071:web:35c5ae3d680800c694fbba"
 };

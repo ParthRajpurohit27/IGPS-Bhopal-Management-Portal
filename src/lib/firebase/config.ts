@@ -1,10 +1,13 @@
 import { initializeFirebase } from "@/firebase";
 
 /**
- * Re-exporting consolidated Firebase instances.
- * Note: Prefer using the hooks (useAuth, useFirestore) from '@/firebase' 
- * inside React components.
+ * Re-exporting consolidated Firebase instances with lazy initialization.
  */
-const { auth, firestore: db } = initializeFirebase();
+const getFirebase = () => {
+  return initializeFirebase();
+};
 
-export { auth, db };
+// We export them as objects that proxy to the actual instances
+// to avoid module-level initialization crashes during the build.
+export const auth = typeof window !== 'undefined' ? getFirebase().auth : {} as any;
+export const db = typeof window !== 'undefined' ? getFirebase().firestore : {} as any;

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -37,6 +36,7 @@ import { useUser, useFirestore, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -46,7 +46,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { user, loading: authLoading } = useUser();
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] = useState<string>('');
   const schoolLogo = PlaceHolderImages.find(img => img.id === 'school-logo');
+
+  useEffect(() => {
+    // Set formatted date only on the client to avoid hydration mismatch
+    setCurrentDate(format(new Date(), 'EEEE, MMMM do'));
+  }, []);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -167,7 +173,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
             <div className="flex items-center gap-4">
                <p className="hidden md:block text-xs font-bold text-primary opacity-60 uppercase tracking-widest">
-                 {format(new Date(), 'EEEE, MMMM do')}
+                 {currentDate}
                </p>
                <Button variant="ghost" size="icon" onClick={() => window.location.reload()} className="h-8 w-8">
                  <RefreshCw className="h-4 w-4 text-primary" />

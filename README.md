@@ -3,37 +3,34 @@
 
 This is the production-ready management portal for Indira Gandhi Public School, Bhopal.
 
-## 🚀 Deployment Instructions (Vercel)
+## 🚀 Final Deployment Steps (Vercel)
 
 ### 1. Upload to GitHub
-Create a new private repository on GitHub and upload all files (except `.idx` and `node_modules`).
+Create a new private repository on GitHub and upload all files.
 
 ### 2. Connect to Vercel
 Connect your GitHub repository to [Vercel](https://vercel.com).
 
-### 3. CRITICAL: Environment Variables
-The "invalid-api-key" error happens because Vercel doesn't have your keys during the build. 
-1. In your Vercel Dashboard, go to **Settings** -> **Environment Variables**.
-2. Add the following keys exactly as they appear in your `.env` file:
-   - `NEXT_PUBLIC_FIREBASE_API_KEY`
-   - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
-   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
-   - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
-   - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
-   - `NEXT_PUBLIC_FIREBASE_APP_ID`
-   - `GEMINI_API_KEY` (for AI features)
-3. **IMPORTANT**: After adding the keys, go to the **Deployments** tab and click **Redeploy**.
+### 3. Environment Variable (The ONLY one needed now)
+Because the Firebase keys are now built into the code, you only need to add **one key** in Vercel **Settings -> Environment Variables**:
 
-## 🔐 Setting up your Owner Account
-1. Once deployed, navigate to `/register`.
-2. Fill in your details (Choose your professional Title: Mr./Ms./Dr.).
-3. Use the Secret Authorization Code: **`IGPS_MASTER`** to become the **Owner**.
-4. **Security Tip**: To change this code, open `src/lib/config.ts` and update the `codes.owner` value.
+| Vercel KEY Name | Value Source |
+|:--- |:--- |
+| `GEMINI_API_KEY` | Get this for free from [aistudio.google.com](https://aistudio.google.com/) |
 
-## 🛠️ Troubleshooting Build Failures
-- **Deprecation Warnings**: You may see warnings about `rimraf` or `inflight`. **Ignore them.** They are just warnings and do NOT cause the build to fail.
-- **Real Errors**: Look for lines starting with `Error:` or `⨯`. 
-- **The Solution**: If the build fails, it is almost always because the **Environment Variables** in Vercel were missed or typed incorrectly. Double-check every single key and value.
+**⚠️ IMPORTANT**: After adding the key, go to the **Deployments** tab and click **Redeploy**.
+
+## 🔐 Creating your Owner Account
+Once your site is live, go to `/register` and enter these details:
+- **Title**: Mr.
+- **Name**: Avdhesh Purohit
+- **Mobile**: 9669872269
+- **Password**: 250674
+- **Authorization Code**: `IGPS_MASTER`
+
+## 🛠️ Troubleshooting
+- **API Key Error**: If you see an API key error, ensure you have **Redeployed** the project in Vercel after the last code update.
+- **Login Issues**: Ensure you have successfully completed the `/register` step first before trying to log in.
 
 ---
 **Maintained by Parth Rajpurohit**
